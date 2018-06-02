@@ -4,10 +4,10 @@ var cfenv = require("cfenv");
 var bodyParser = require('body-parser')
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 /* Endpoint to greet and add a new visitor to database.
 * Send a POST request to localhost:3000/api/visitors with body
@@ -23,6 +23,7 @@ app.post("/api/visitors", function (request, response) {
     response.send(doc);
     return;
   }
+});
 
 /**
  * Endpoint to get a JSON array of all the visitors in the database
@@ -41,6 +42,7 @@ app.get("/api/visitors", function (request, response) {
     response.json(names);
     return;
   }
+});
 
 
 //serve static file (index.html, images, css)
