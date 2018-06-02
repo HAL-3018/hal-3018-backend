@@ -1,0 +1,5 @@
+---
+applications:
+ - name: hal3018
+   random-route: true
+   memory: 512M
