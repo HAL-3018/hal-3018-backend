@@ -24,6 +24,7 @@
     "express": "^4.15.x",
     "mongodb": "^3.0.9",
     "request": "^2.87.0",
+    "sleep": "^5.1.1",
     "watson-developer-cloud": "^3.4.4"
   },
   "author": "IBM Corp",

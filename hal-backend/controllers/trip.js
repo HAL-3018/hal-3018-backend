@@ -2,6 +2,7 @@ var express = require('express'),
   router = express.Router();
 var amadeus = require('../amadeus.js')
 var cloudant = require('../cloudant.js')
+var sleep = require('sleep')
 
 const MAX_NEAREST_AIRPORTS = 2;
 const MAX_FLIES = 3;
@@ -19,8 +20,8 @@ router.get('/suggestion/:id', function(request, response) {
   cloudant.getSugestion("0");
 });
 
-router.get('/recommendation/:longitude/:latitude', function(request, response) {
-  var body = [];
+router.get('/recommendation/:longitude/:latitude', function(request, resp) {
+  var body = '';
   amadeus.referenceData.locations.airports.get({
     longitude: request.params.longitude,
     latitude: request.params.latitude
@@ -36,11 +37,13 @@ router.get('/recommendation/:longitude/:latitude', function(request, response) {
         }).then(function(response) {
           var cnt = 0
           response.data.forEach(function(elm) {
+            cnt+=1;
             if (cnt < MAX_FLIES) {
-              console.log(elm);
-              body = body + elm;
+              body+=JSON.stringify(elm);
             }
           });
+          console.log(body);
+          resp.send(body);
         }).catch(function(responseError) {
           console.log(responseError);
         });
@@ -49,8 +52,7 @@ router.get('/recommendation/:longitude/:latitude', function(request, response) {
   }).catch(function(responseError) {
     console.log(responseError.code);
   });
-  console.log(body);
-  response.send(body);
+
 });
 
 module.exports = router;
