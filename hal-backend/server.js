@@ -1,7 +1,19 @@
+'use strict';
+
+require('dotenv').config({silent: true});
+
 var express = require("express");
 var app = express();
 var cfenv = require("cfenv");
 var bodyParser = require('body-parser')
+var util = require('util')
+var assert = require('assert');
+var fs = require("fs");
+var https = require('https');
+var mongo = require('./mongo.js')
+var conversation = require('./conversation.js')
+var amadeus = require('./amadeus.js')
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,6 +54,32 @@ app.get("/api/visitors", function (request, response) {
     response.json(names);
     return;
   }
+});
+
+// The user has clicked submit to add a word and definition to the database
+// Send the data to the addWord function and send a response if successful
+app.put("/words", function(request, response) {
+  addWord('request.body.word', 'request.body.definition')
+    .then(function(resp) {
+      response.send(resp);
+    })
+    .catch(function(err) {
+      console.log(err);
+      response.status(500).send(err);
+    });
+});
+
+// Read from the database when the page is loaded or after a word is successfully added
+// Use the getWords function to get a list of words and definitions from the database
+app.get("/words", function(request, response) {
+  getWords()
+    .then(function(words) {
+      response.send(words);
+    })
+    .catch(function(err) {
+      console.log(err);
+      response.status(500).send(err);
+    });
 });
 
 
