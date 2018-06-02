@@ -10,7 +10,6 @@ var util = require('util')
 var assert = require('assert');
 var fs = require("fs");
 var https = require('https');
-var cloudant = require('./cloudant.js')
 var conversation = require('./conversation.js')
 
 
